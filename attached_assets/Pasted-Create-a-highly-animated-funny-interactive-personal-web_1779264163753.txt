@@ -1,0 +1,115 @@
+Create a highly animated, funny, interactive personal website for a gamer named Akshay Yadav😎🎮
+
+STYLE:
+
+* Modern gaming aesthetic with neon colors, glowing UI, and dark mode 🌌
+* Smooth animations everywhere ✨
+* Meme-style humor 😂
+* Cartoon/game-inspired illustrations 🎨
+* Add particle backgrounds, floating icons, hover effects, transitions, sound effects, and animated sections
+* Make the website feel like a chaotic gamer profile mixed with a meme website 💀🔥
+* Fully responsive on mobile and desktop 📱💻
+
+MAIN HERO SECTION:
+
+* Large animated title:
+  “AKSHAY: THE FREE FIRE LEGEND 🔥”
+* Subtitle:
+  “8 hours of Free Fire. Infinite rage 😡”
+* Add animated gaming controller 🎮, sniper rifle 🔫 graphics, explosions 💥, and funny emojis
+* Add a fake “Rage Meter” that increases whenever Akshay dies in Free Fire 📈😤
+
+ABOUT AKSHAY SECTION:
+Display these facts in funny animated cards with emojis:
+
+* 🎮 Akshay plays Free Fire every day for 8 hours
+* 🏎️ When not playing Free Fire, he plays Asphalt Legends
+* 📺🎵 When not gaming, he watches TV and listens to songs
+* 🎶 Favorite song: “Bairan”
+* 😡 Gets extremely angry when he dies in Free Fire
+* 🔫 Favorite weapons: sniper, shotgun, and Desert Eagle
+* 🩺 Wants to become an orthopedic surgeon when he grows up
+* 💀 Gets angry very quickly
+* 🆔 Free Fire UID: 12695841391
+* 👤 Free Fire name: Danger_Team
+* 👶 Guild: TM baby guild
+* 🤣 Treats his friends rudely (show this humorously)
+* 🍬 Loves sweets
+* 📭 Has no email ID
+* ⛏️🎲 Wants to play Roblox and Minecraft
+* 🚗 Loves cars
+* 😨 Is afraid of his mother
+
+INTERACTIVE FEATURES:
+
+* Add a giant clickable “RAGE BUTTON 😤” that shakes the whole screen and triggers funny effects
+* Add a fake gaming stats dashboard 📊
+* Add animated XP bars ⚡
+* Add a “Daily Schedule” timeline:
+  🎮 Free Fire → 🏎️ Asphalt → 📺 TV → 🎵 Songs → 🔁 Repeat
+* Add floating weapons 🔫 and gaming icons 🎮
+* Add hover animations on every card ✨
+* Add confetti 🎉 when hovering over sweets
+* Add a “MOTHER ALERT MODE 🚨👩” button where the website suddenly changes to:
+  “Studying very seriously 📚”
+  with fake school tabs and calm colors 😂
+
+FUNNY SECTIONS:
+
+1. 😡 “Akshay’s Anger Levels”
+2. 🔫 “Top Weapons”
+3. 🩺 “Future Orthopedic Surgeon”
+4. 🎮 “Games Akshay Wants to Play”
+5. 😨 “Fear Level: Mother”
+
+VISUALS:
+
+* Add lots of illustrations and SVG graphics 🎨
+* Add animated cars 🚗💨
+* Add Free Fire inspired visuals (without copyrighted assets)
+* Add Roblox and Minecraft inspired blocky graphics ⛏️
+* Add animated music visualizer effects 🎵
+* Add emoji explosions and floating reactions everywhere 💥😂🔥
+
+TECH:
+
+* Use React + Tailwind CSS
+* Use Framer Motion for animations
+* Add smooth scrolling
+* Add loading screen animation
+* Use reusable components
+* Keep code modern and visually impressive
+
+EXTRA:
+
+* Make the entire site feel alive and over-the-top 🔥
+* Include easter eggs and funny hidden interactions 🥚
+* Add a background music toggle 🎵
+* Add animated cursor effects ✨
+* Add fake achievements/trophies 🏆
+* Make it look like a premium interactive gaming profile website
+
+Examples:
+
+* Section titles should include emojis
+* Buttons should include emojis
+* Cards should include emojis
+* Stats should include emojis
+* Animated floating emojis should appear across the page
+* Use emojis as decorative UI elements throughout the website
+
+Examples:
+🎮 Gaming
+😡 Rage
+🔥 Fire
+🚗 Cars
+🎵 Music
+🍬 Sweets
+💀 Funny moments
+🏆 Achievements
+📺 TV
+⚡ Energy
+💥 Explosions
+
+The website should feel expressive, meme-like, energetic, and visually playful because of the emojis.
+

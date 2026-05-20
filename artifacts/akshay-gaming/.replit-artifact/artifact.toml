@@ -1,0 +1,31 @@
+kind = "web"
+previewPath = "/"
+title = "Akshay Gaming Website"
+version = "1.0.0"
+id = "artifacts/akshay-gaming"
+router = "path"
+
+[[integratedSkills]]
+name = "react-vite"
+version = "1.0.0"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 23957
+
+[services.development]
+run = "pnpm --filter @workspace/akshay-gaming run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/akshay-gaming", "run", "build" ]
+publicDir = "artifacts/akshay-gaming/dist/public"
+serve = "static"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "23957"
+BASE_PATH = "/"
