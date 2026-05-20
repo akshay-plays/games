@@ -1,103 +1,117 @@
-import { useRef, useCallback } from "react";
+import { useRef, useCallback, useEffect } from "react";
+
+const BAIRAN_VIDEO_ID = "vF9qhg3lbR8";
+
+declare global {
+  interface Window {
+    YT: {
+      Player: new (
+        elementId: string,
+        options: {
+          videoId: string;
+          playerVars?: Record<string, number | string>;
+          events?: {
+            onReady?: (e: { target: { playVideo: () => void; pauseVideo: () => void; unMute: () => void; setVolume: (v: number) => void } }) => void;
+            onStateChange?: (e: { data: number }) => void;
+          };
+        }
+      ) => YTPlayer;
+      PlayerState: { ENDED: number };
+    };
+    onYouTubeIframeAPIReady: () => void;
+  }
+}
+
+interface YTPlayer {
+  playVideo: () => void;
+  pauseVideo: () => void;
+  unMute: () => void;
+  setVolume: (v: number) => void;
+  destroy: () => void;
+}
 
 export function useGameMusic() {
-  const ctxRef = useRef<AudioContext | null>(null);
-  const nodesRef = useRef<AudioNode[]>([]);
+  const playerRef = useRef<YTPlayer | null>(null);
+  const readyRef = useRef(false);
   const playingRef = useRef(false);
-  const scheduleRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const containerRef = useRef<HTMLDivElement | null>(null);
 
-  const getCtx = () => {
-    if (!ctxRef.current || ctxRef.current.state === "closed") {
-      ctxRef.current = new AudioContext();
-    }
-    return ctxRef.current;
+  const ensureContainer = () => {
+    if (document.getElementById("yt-bairan-player")) return;
+    const div = document.createElement("div");
+    div.id = "yt-bairan-player";
+    div.style.cssText = "position:fixed;width:1px;height:1px;opacity:0;pointer-events:none;bottom:0;left:0;";
+    document.body.appendChild(div);
+    containerRef.current = div;
   };
 
-  const playNote = (
-    ctx: AudioContext,
-    freq: number,
-    startTime: number,
-    duration: number,
-    type: OscillatorType = "square",
-    gain = 0.08
-  ) => {
-    const osc = ctx.createOscillator();
-    const env = ctx.createGain();
-    osc.type = type;
-    osc.frequency.setValueAtTime(freq, startTime);
-    env.gain.setValueAtTime(0, startTime);
-    env.gain.linearRampToValueAtTime(gain, startTime + 0.01);
-    env.gain.setValueAtTime(gain, startTime + duration - 0.03);
-    env.gain.linearRampToValueAtTime(0, startTime + duration);
-    osc.connect(env);
-    env.connect(ctx.destination);
-    osc.start(startTime);
-    osc.stop(startTime + duration);
-    nodesRef.current.push(osc, env);
-  };
-
-  const scheduleLoop = useCallback((ctx: AudioContext, loopStart: number) => {
-    if (!playingRef.current) return;
-
-    const bpm = 140;
-    const step = 60 / bpm / 2;
-
-    // --- Melody (square wave) ---
-    const melody = [
-      [523, 1], [659, 1], [784, 1], [659, 1],
-      [880, 2], [784, 1], [659, 1],
-      [523, 1], [587, 1], [659, 2], [523, 2],
-      [698, 1], [784, 1], [880, 2], [698, 2],
-    ];
-
-    let t = loopStart;
-    for (const [freq, beats] of melody) {
-      playNote(ctx, freq, t, step * beats * 0.85, "square", 0.07);
-      t += step * beats;
-    }
-
-    // --- Bass (sawtooth) ---
-    const bass = [130, 0, 146, 0, 130, 0, 116, 0, 130, 0, 146, 0, 130, 0, 116, 0];
-    t = loopStart;
-    for (const freq of bass) {
-      if (freq > 0) playNote(ctx, freq, t, step * 0.7, "sawtooth", 0.05);
-      t += step;
-    }
-
-    // --- Hi-hat (noise-like via high-freq triangle) ---
-    for (let i = 0; i < 16; i++) {
-      if (i % 2 === 1) {
-        playNote(ctx, 8000 + Math.random() * 2000, loopStart + i * step, step * 0.1, "triangle", 0.03);
-      }
-    }
-
-    // --- Kick (low sine blip) ---
-    const kicks = [0, 4, 8, 12];
-    for (const k of kicks) {
-      playNote(ctx, 60, loopStart + k * step, step * 0.3, "sine", 0.12);
-    }
-
-    const loopDuration = step * 16 * 1000;
-    scheduleRef.current = setTimeout(() => scheduleLoop(ctx, loopStart + step * 16), loopDuration - 100);
+  const initPlayer = useCallback(() => {
+    if (playerRef.current || !window.YT?.Player) return;
+    ensureContainer();
+    playerRef.current = new window.YT.Player("yt-bairan-player", {
+      videoId: BAIRAN_VIDEO_ID,
+      playerVars: {
+        autoplay: 1,
+        loop: 1,
+        playlist: BAIRAN_VIDEO_ID,
+        controls: 0,
+        disablekb: 1,
+        fs: 0,
+        modestbranding: 1,
+        rel: 0,
+        mute: 0,
+      },
+      events: {
+        onReady: (e) => {
+          readyRef.current = true;
+          e.target.setVolume(70);
+          if (playingRef.current) e.target.playVideo();
+        },
+        onStateChange: (e) => {
+          if (e.data === window.YT.PlayerState.ENDED) {
+            playerRef.current?.playVideo();
+          }
+        },
+      },
+    });
   }, []);
 
-  const start = useCallback(async () => {
-    const ctx = getCtx();
-    if (ctx.state === "suspended") await ctx.resume();
+  const loadYTScript = useCallback(() => {
+    if (document.getElementById("yt-api-script")) {
+      if (window.YT?.Player) initPlayer();
+      return;
+    }
+    const prev = window.onYouTubeIframeAPIReady;
+    window.onYouTubeIframeAPIReady = () => {
+      prev?.();
+      initPlayer();
+    };
+    const script = document.createElement("script");
+    script.id = "yt-api-script";
+    script.src = "https://www.youtube.com/iframe_api";
+    document.head.appendChild(script);
+  }, [initPlayer]);
+
+  const start = useCallback(() => {
     playingRef.current = true;
-    scheduleLoop(ctx, ctx.currentTime + 0.05);
-  }, [scheduleLoop]);
+    if (!playerRef.current) {
+      loadYTScript();
+    } else if (readyRef.current) {
+      playerRef.current.playVideo();
+    }
+  }, [loadYTScript]);
 
   const stop = useCallback(() => {
     playingRef.current = false;
-    if (scheduleRef.current) clearTimeout(scheduleRef.current);
-    nodesRef.current.forEach(n => {
-      try { (n as OscillatorNode).stop?.(); } catch {}
-    });
-    nodesRef.current = [];
-    if (ctxRef.current) {
-      ctxRef.current.suspend();
+    if (playerRef.current && readyRef.current) {
+      playerRef.current.pauseVideo();
     }
+  }, []);
+
+  useEffect(() => {
+    return () => {
+      playerRef.current?.destroy();
+    };
   }, []);
 
   return { start, stop };

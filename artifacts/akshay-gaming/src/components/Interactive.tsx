@@ -2,33 +2,32 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
 const RAGE_QUOTES = [
-  "WHY IS EVERYONE CAMPING?! 🤬",
-  "MY WIFI IS FINE THE GAME IS BROKEN! 😤",
-  "THIS SNIPER IS TRASH! 🔫💀",
-  "REPORTED. REPORTED. REPORTED. 🚨",
-  "I QUIT. (rejoins 10 seconds later) 😭",
-  "THAT WAS NOT A VALID HIT! 💀",
-  "I HATE THIS GAME 🔥 (still plays 8 hrs)",
-  "WHY DID MY TEAMMATE PUSH ALONE?! 😡",
+  "YE KAUNSA GAME HAI BHAI, MERA PHONE TODUNGA!! 🤬",
+  "WIFI THEEK HAI, GAME BEKAR HAI — FINAL ANSWER! 📡",
+  "EK CLUTCH CHAHIYE THA, EK!! BUT NAHI MILTI!! 💀",
+  "REPORTED. REPORTED. REPORTED. REPORTED. (loop) 🚨",
+  "GAME CHOD RAHA HU. (5 second baad wapas aata hai) 😤",
+  "BHAI YE SNIPER CROOKED HAI, PAKKA! 🔫",
+  "TEAMMATES BRAIN NAHI HAI — CERTIFIED! 🧠❌",
+  "MAA KI KASAM BADLA LUNGA!! 😡🔥",
 ];
 
 const SCHEDULE = [
-  { time: "9 AM", icon: "🎮", label: "Free Fire", color: "hsl(var(--primary))" },
-  { time: "12 PM", icon: "🍬", label: "Sweets break", color: "hsl(var(--secondary))" },
-  { time: "1 PM", icon: "🎮", label: "More Free Fire", color: "hsl(var(--primary))" },
-  { time: "4 PM", icon: "🏎️", label: "Asphalt Legends", color: "hsl(var(--accent))" },
-  { time: "6 PM", icon: "📺", label: "TV time", color: "#8b5cf6" },
-  { time: "8 PM", icon: "🎵", label: "Bairan on repeat", color: "hsl(var(--secondary))" },
-  { time: "10 PM", icon: "🔁", label: "Repeat from 9 AM", color: "hsl(var(--destructive))" },
+  { time: "Subah uthte hi", icon: "🎮", label: "Free Fire on karo", color: "hsl(var(--primary))" },
+  { time: "Dopahar mein", icon: "🍬", label: "Mitha khao, game karo", color: "hsl(var(--secondary))" },
+  { time: "Shaam ko", icon: "🏎️", label: "Asphalt Legends", color: "hsl(var(--accent))" },
+  { time: "Raat ko", icon: "📺", label: "TV time (forced by maa)", color: "#8b5cf6" },
+  { time: "Sone se pehle", icon: "🎵", label: "Bairan loop pe", color: "hsl(var(--secondary))" },
+  { time: "Raat 2 baje", icon: "🔁", label: "Repeat from step 1", color: "hsl(var(--destructive))" },
 ];
 
 const XP_STATS = [
   { label: "Free Fire Hours", value: 98, color: "hsl(var(--primary))" },
-  { label: "Rage Level", value: 95, color: "hsl(var(--destructive))" },
-  { label: "Asphalt Hours", value: 45, color: "hsl(var(--accent))" },
-  { label: "Study Hours", value: 3, color: "#8b5cf6" },
-  { label: "Sweets Eaten", value: 88, color: "hsl(var(--secondary))" },
-  { label: "Mom Fear Level", value: 100, color: "#ff00ff" },
+  { label: "Gussa Level 😡", value: 95, color: "hsl(var(--destructive))" },
+  { label: "Asphalt Grind", value: 45, color: "hsl(var(--accent))" },
+  { label: "Padhai ka XP 📚", value: 3, color: "#8b5cf6" },
+  { label: "Mitha khaya 🍬", value: 88, color: "hsl(var(--secondary))" },
+  { label: "Maa ka dar 👩", value: 100, color: "#ff00ff" },
 ];
 
 export default function Interactive({
@@ -52,16 +51,12 @@ export default function Interactive({
 
   return (
     <section className="py-8 space-y-14">
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        className="text-center mb-8"
-      >
+      <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-center mb-8">
         <h2 className="font-display text-2xl sm:text-3xl uppercase mb-2"
           style={{ textShadow: "0 0 20px hsl(var(--destructive))", color: "hsl(var(--destructive))" }}>
-          😤 RAGE CONTROL CENTER 😤
+          😤 GUSSA CONTROL CENTER 😤
         </h2>
+        <p className="text-xs text-muted-foreground font-mono">Warning: Handle karo, toot sakta hai (Akshay, not the phone... maybe) 💀</p>
       </motion.div>
 
       <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
@@ -70,18 +65,12 @@ export default function Interactive({
           whileTap={{ scale: 0.92 }}
           onClick={handleRage}
           className="relative px-10 py-6 rounded-xl font-display text-lg uppercase tracking-wide text-white transition-all"
-          style={{
-            background: "linear-gradient(135deg, hsl(var(--destructive)), #cc0000)",
-            boxShadow: "0 0 20px hsl(var(--destructive) / 0.6), inset 0 0 20px rgba(255,255,255,0.05)",
-          }}
+          style={{ background: "linear-gradient(135deg, hsl(var(--destructive)), #cc0000)", boxShadow: "0 0 20px hsl(var(--destructive) / 0.6)" }}
+          data-testid="button-rage"
         >
-          <motion.span
-            animate={{ scale: [1, 1.1, 1] }}
-            transition={{ duration: 1.5, repeat: Infinity }}
-            className="inline-block mr-2 text-2xl"
-          >😤</motion.span>
-          RAGE BUTTON
-          <div className="text-xs mt-1 font-mono opacity-75">Clicks: {rageClicks}</div>
+          <motion.span animate={{ scale: [1, 1.1, 1] }} transition={{ duration: 1.5, repeat: Infinity }} className="inline-block mr-2 text-2xl">😤</motion.span>
+          GUSSA BUTTON
+          <div className="text-xs mt-1 font-mono opacity-75">Dabaya: {rageClicks} baar</div>
         </motion.button>
 
         <motion.button
@@ -89,14 +78,12 @@ export default function Interactive({
           whileTap={{ scale: 0.92 }}
           onClick={() => setMotherAlert(!motherAlert)}
           className="relative px-8 py-6 rounded-xl font-display text-lg uppercase tracking-wide text-white transition-all"
-          style={{
-            background: "linear-gradient(135deg, #cc6600, #884400)",
-            boxShadow: "0 0 20px rgba(255, 136, 0, 0.5)",
-          }}
+          style={{ background: "linear-gradient(135deg, #cc6600, #884400)", boxShadow: "0 0 20px rgba(255,136,0,0.5)" }}
+          data-testid="button-mother-alert"
         >
           <span className="text-2xl mr-2">🚨👩</span>
-          MOTHER ALERT<br />
-          <span className="text-xs font-mono opacity-75">MODE {motherAlert ? "ON 🔒" : "OFF"}</span>
+          MAA AA GAYI!<br />
+          <span className="text-xs font-mono opacity-75">Mode: {motherAlert ? "ON — Padh raha hu 📚" : "OFF — Game on hai"}</span>
         </motion.button>
       </div>
 
@@ -116,31 +103,20 @@ export default function Interactive({
       </AnimatePresence>
 
       <div>
-        <motion.h3
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
+        <motion.h3 initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }}
           className="font-display text-xl uppercase text-center mb-6"
-          style={{ color: "hsl(var(--secondary))", textShadow: "0 0 15px hsl(var(--secondary))" }}
-        >
-          ⚡ AKSHAY'S STATS ⚡
+          style={{ color: "hsl(var(--secondary))", textShadow: "0 0 15px hsl(var(--secondary))" }}>
+          ⚡ AKSHAY KE STATS ⚡
         </motion.h3>
         <div className="space-y-4">
           {XP_STATS.map((stat, i) => (
-            <motion.div
-              key={stat.label}
-              initial={{ opacity: 0, x: -30 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: i * 0.08 }}
-            >
+            <motion.div key={stat.label} initial={{ opacity: 0, x: -30 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.08 }}>
               <div className="flex justify-between text-xs font-mono mb-1">
                 <span className="text-muted-foreground">{stat.label}</span>
                 <span style={{ color: stat.color }}>{stat.value}%</span>
               </div>
               <div className="w-full h-5 bg-card border border-border rounded-sm overflow-hidden">
-                <motion.div
-                  className="h-full rounded-sm"
+                <motion.div className="h-full rounded-sm"
                   initial={{ width: 0 }}
                   whileInView={{ width: `${stat.value}%` }}
                   viewport={{ once: true }}
@@ -154,37 +130,25 @@ export default function Interactive({
       </div>
 
       <div>
-        <motion.h3
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
+        <motion.h3 initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }}
           className="font-display text-xl uppercase text-center mb-6"
-          style={{ color: "hsl(var(--accent))", textShadow: "0 0 15px hsl(var(--accent))" }}
-        >
-          🗓️ DAILY SCHEDULE 🗓️
+          style={{ color: "hsl(var(--accent))", textShadow: "0 0 15px hsl(var(--accent))" }}>
+          🗓️ AKSHAY KA DAILY ROUTINE 🗓️
         </motion.h3>
         <div className="relative">
           <div className="absolute left-8 top-0 bottom-0 w-0.5 bg-border" />
           <div className="space-y-4">
             {SCHEDULE.map((item, i) => (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0, x: -20 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.1 }}
-                className="relative flex items-center gap-4 pl-16"
-              >
-                <motion.div
-                  className="absolute left-4 w-8 h-8 rounded-full flex items-center justify-center text-lg border-2"
+              <motion.div key={i} initial={{ opacity: 0, x: -20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.1 }}
+                className="relative flex items-center gap-4 pl-16">
+                <motion.div className="absolute left-4 w-8 h-8 rounded-full flex items-center justify-center text-lg border-2"
                   style={{ borderColor: item.color, background: `${item.color}20`, boxShadow: `0 0 12px ${item.color}` }}
                   animate={{ boxShadow: [`0 0 8px ${item.color}`, `0 0 20px ${item.color}`, `0 0 8px ${item.color}`] }}
-                  transition={{ duration: 2, repeat: Infinity, delay: i * 0.3 }}
-                >
+                  transition={{ duration: 2, repeat: Infinity, delay: i * 0.3 }}>
                   {item.icon}
                 </motion.div>
                 <div className="bg-card border border-border rounded-lg px-4 py-2 flex-1">
-                  <div className="flex items-center justify-between">
+                  <div className="flex items-center justify-between flex-wrap gap-1">
                     <span className="font-display text-xs" style={{ color: item.color }}>{item.time}</span>
                     <span className="text-sm text-foreground">{item.label}</span>
                   </div>

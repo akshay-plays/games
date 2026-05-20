@@ -39,7 +39,7 @@ function MusicButton({ on, onClick }: { on: boolean; onClick: () => void }) {
         </svg>
       )}
       <span className="text-xs font-display hidden sm:inline" style={on ? { color: "hsl(var(--secondary))" } : { color: "hsl(var(--muted-foreground))" }}>
-        {on ? "♪ ON" : "MUTE"}
+        {on ? "♪ BAIRAN" : "MUTE"}
       </span>
     </motion.button>
   );
@@ -58,25 +58,40 @@ export default function Home() {
   }, []);
 
   useEffect(() => {
+    if (!loading) {
+      const handleFirstInteraction = () => {
+        start();
+        setMusicOn(true);
+        document.removeEventListener("click", handleFirstInteraction);
+        document.removeEventListener("touchstart", handleFirstInteraction);
+      };
+      document.addEventListener("click", handleFirstInteraction);
+      document.addEventListener("touchstart", handleFirstInteraction);
+      return () => {
+        document.removeEventListener("click", handleFirstInteraction);
+        document.removeEventListener("touchstart", handleFirstInteraction);
+      };
+    }
+  }, [loading, start]);
+
+  useEffect(() => {
     if (motherAlert) {
       document.documentElement.classList.add("mother-alert-mode");
-      if (musicOn) stop();
+      stop();
     } else {
       document.documentElement.classList.remove("mother-alert-mode");
       if (musicOn) start();
     }
   }, [motherAlert]);
 
-  const triggerShake = () => {
-    setShakeKey(prev => prev + 1);
-  };
+  const triggerShake = () => setShakeKey(prev => prev + 1);
 
-  const toggleMusic = async () => {
+  const toggleMusic = () => {
     if (musicOn) {
       stop();
       setMusicOn(false);
     } else {
-      await start();
+      start();
       setMusicOn(true);
     }
   };
@@ -93,10 +108,7 @@ export default function Home() {
           initial={{ x: 0, y: 0 }}
           animate={
             shakeKey > 0
-              ? {
-                  x: [0, -20, 20, -20, 20, -10, 10, -5, 5, 0],
-                  y: [0, -15, 15, -15, 15, -10, 10, -5, 5, 0],
-                }
+              ? { x: [0, -20, 20, -20, 20, -10, 10, -5, 5, 0], y: [0, -15, 15, -15, 15, -10, 10, -5, 5, 0] }
               : {}
           }
           transition={{ duration: 0.5, ease: "easeInOut" }}
@@ -104,10 +116,12 @@ export default function Home() {
         >
           {motherAlert ? (
             <div className="min-h-screen flex flex-col items-center justify-center bg-gray-100 text-gray-800 p-4">
-              <h1 className="text-4xl font-serif mb-8">Studying Very Seriously 📚</h1>
+              <h1 className="text-4xl font-serif mb-2">Studying Very Seriously 📚</h1>
+              <p className="text-sm text-gray-500 mb-8 italic">Maa aa gayi... act normal act normal act normal</p>
               <div className="bg-white p-8 rounded-lg shadow-md max-w-md w-full border border-gray-200">
                 <h2 className="text-xl font-bold mb-4">Biology 101: The Skeletal System</h2>
-                <p className="mb-4">As a future orthopedic surgeon, I am diligently studying the human skeleton.</p>
+                <p className="mb-2">As a future orthopedic surgeon, I am diligently studying the human skeleton.</p>
+                <p className="text-xs text-gray-400 mb-4 italic">(Free Fire tab is hidden. Nothing suspicious here.)</p>
                 <div className="h-4 bg-gray-200 rounded overflow-hidden mb-8">
                   <div className="h-full bg-blue-500 w-[85%]"></div>
                 </div>
@@ -115,7 +129,7 @@ export default function Home() {
                   onClick={() => setMotherAlert(false)}
                   className="w-full py-3 bg-blue-600 hover:bg-blue-700 text-white rounded font-medium transition-colors"
                 >
-                  Mom Left Room
+                  Maa chali gayi, wapas aao 🎮
                 </button>
               </div>
             </div>
@@ -137,8 +151,8 @@ export default function Home() {
               </main>
 
               <footer className="w-full py-8 text-center text-muted-foreground border-t border-border mt-20">
-                <p>Built with pure rage 😤 for Akshay Yadav.</p>
-                <p className="text-xs mt-2 opacity-50">Please don't tell his mom.</p>
+                <p>Pure gusse ke saath banaya gaya 😤 — Akshay Yadav ke liye.</p>
+                <p className="text-xs mt-2 opacity-50">Maa ko mat batana. 🤫</p>
               </footer>
             </>
           )}
