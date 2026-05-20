@@ -17,8 +17,8 @@ const TROPHIES = [
   },
   {
     icon: "👩",
-    title: "Survived Mom's Wrath",
-    desc: "Closed 15 tabs in under 2 seconds, opened a biology textbook, and was 'studying' before she entered.",
+    title: "Survived Mummy's Wrath",
+    desc: "Closed 15 tabs in under 2 seconds, opened a biology textbook, and was 'studying' before Mummy entered.",
     rarity: "MYTHIC",
     color: "#ff00ff",
   },

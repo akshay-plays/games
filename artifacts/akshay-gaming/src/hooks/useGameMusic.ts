@@ -1,6 +1,6 @@
 import { useRef, useCallback, useEffect } from "react";
 
-const BAIRAN_VIDEO_ID = "vF9qhg3lbR8";
+const BAIRAN_VIDEO_ID = "vsHtDl4Wee4";
 
 declare global {
   interface Window {

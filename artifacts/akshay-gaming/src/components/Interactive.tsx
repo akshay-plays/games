@@ -9,7 +9,7 @@ const RAGE_QUOTES = [
   "GAME CHOD RAHA HU. (5 second baad wapas aata hai) 😤",
   "BHAI YE SNIPER CROOKED HAI, PAKKA! 🔫",
   "TEAMMATES BRAIN NAHI HAI — CERTIFIED! 🧠❌",
-  "MAA KI KASAM BADLA LUNGA!! 😡🔥",
+  "MUMMY KI KASAM BADLA LUNGA!! 😡🔥",
 ];
 
 const SCHEDULE = [
@@ -82,7 +82,7 @@ export default function Interactive({
           data-testid="button-mother-alert"
         >
           <span className="text-2xl mr-2">🚨👩</span>
-          MAA AA GAYI!<br />
+          MUMMY AA GAYI!<br />
           <span className="text-xs font-mono opacity-75">Mode: {motherAlert ? "ON — Padh raha hu 📚" : "OFF — Game on hai"}</span>
         </motion.button>
       </div>

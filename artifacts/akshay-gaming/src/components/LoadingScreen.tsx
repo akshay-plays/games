@@ -6,7 +6,7 @@ const BOOT_MESSAGES = [
   "Importing Gussa.dll... 😡",
   "Connecting to Free Fire servers... 🔫",
   "Calibrating Sniper Aim (still bad)... 🎯",
-  "Hiding from Maa... 🤫",
+  "Hiding from Mummy... 🤫",
   "Stocking up on sweets... 🍬",
   "Setting up Danger_Team profile... 😎",
   "Almost ready, bhai ruk! ⏳",

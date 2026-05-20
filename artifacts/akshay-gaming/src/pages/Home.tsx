@@ -117,7 +117,7 @@ export default function Home() {
           {motherAlert ? (
             <div className="min-h-screen flex flex-col items-center justify-center bg-gray-100 text-gray-800 p-4">
               <h1 className="text-4xl font-serif mb-2">Studying Very Seriously 📚</h1>
-              <p className="text-sm text-gray-500 mb-8 italic">Maa aa gayi... act normal act normal act normal</p>
+              <p className="text-sm text-gray-500 mb-8 italic">Mummy aa gayi... act normal act normal act normal</p>
               <div className="bg-white p-8 rounded-lg shadow-md max-w-md w-full border border-gray-200">
                 <h2 className="text-xl font-bold mb-4">Biology 101: The Skeletal System</h2>
                 <p className="mb-2">As a future orthopedic surgeon, I am diligently studying the human skeleton.</p>
@@ -129,7 +129,7 @@ export default function Home() {
                   onClick={() => setMotherAlert(false)}
                   className="w-full py-3 bg-blue-600 hover:bg-blue-700 text-white rounded font-medium transition-colors"
                 >
-                  Maa chali gayi, wapas aao 🎮
+                  Mummy chali gayi, wapas aao 🎮
                 </button>
               </div>
             </div>
@@ -152,7 +152,7 @@ export default function Home() {
 
               <footer className="w-full py-8 text-center text-muted-foreground border-t border-border mt-20">
                 <p>Pure gusse ke saath banaya gaya 😤 — Akshay Yadav ke liye.</p>
-                <p className="text-xs mt-2 opacity-50">Maa ko mat batana. 🤫</p>
+                <p className="text-xs mt-2 opacity-50">Mummy ko mat batana. 🤫</p>
               </footer>
             </>
           )}
