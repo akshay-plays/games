@@ -1,11 +1,80 @@
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
+import { useState } from "react";
 
 const akshayphoto = `${import.meta.env.BASE_URL}akshay-photo.png`;
+const thugsGlasses = `${import.meta.env.BASE_URL}thug-glasses.png`;
 
-const PHOTO_W = 220;
-const PHOTO_H = 300;
+const PHOTO_W = 270;
+const PHOTO_H = 370;
+const GLASSES_W = 130;
+
+const FACE_ZONE = { x0: 25, x1: 230, y0: 15, y1: 140 };
+
+function ThugLifeGlasses({
+  onDrop,
+  onDragStart,
+}: {
+  onDrop: (inFace: boolean) => void;
+  onDragStart: () => void;
+}) {
+  const [isDragging, setIsDragging] = useState(false);
+
+  return (
+    <motion.div
+      drag
+      dragMomentum={false}
+      dragElastic={0}
+      onDragStart={() => {
+        setIsDragging(true);
+        onDragStart();
+      }}
+      onDragEnd={() => {
+        setIsDragging(false);
+        const el = document.getElementById("glasses-drag");
+        if (el) {
+          const rect = el.getBoundingClientRect();
+          const parent = el.closest("[data-photo-container]")?.getBoundingClientRect();
+          if (parent) {
+            const cx = rect.left - parent.left + GLASSES_W / 2;
+            const cy = rect.top - parent.top + 10;
+            onDrop(
+              cx >= FACE_ZONE.x0 && cx <= FACE_ZONE.x1 &&
+              cy >= FACE_ZONE.y0 && cy <= FACE_ZONE.y1
+            );
+            return;
+          }
+        }
+        onDrop(false);
+      }}
+      id="glasses-drag"
+      initial={{
+        x: Math.round((PHOTO_W - GLASSES_W) / 2),
+        y: Math.round(PHOTO_H * 0.18),
+      }}
+      whileDrag={{ scale: 1.06 }}
+      className="absolute top-0 left-0 pointer-events-auto select-none"
+      style={{
+        cursor: isDragging ? "grabbing" : "grab",
+        touchAction: "none",
+        zIndex: 30,
+        width: GLASSES_W,
+        filter: "drop-shadow(0 0 6px #ff00ffaa)",
+      }}
+      title="Drag glasses onto the face!"
+    >
+      <img
+        src={thugsGlasses}
+        alt="Thug Life Glasses"
+        draggable={false}
+        style={{ width: "100%", display: "block", transform: "scaleX(-1)" }}
+      />
+    </motion.div>
+  );
+}
 
 export default function Hero({ onShake }: { onShake: () => void }) {
+  const [dealWithIt, setDealWithIt] = useState(false);
+
   return (
     <section className="relative min-h-[60vh] flex flex-col items-center justify-center text-center py-12 overflow-visible">
       <motion.div
@@ -14,15 +83,19 @@ export default function Hero({ onShake }: { onShake: () => void }) {
         transition={{ delay: 0.2, duration: 0.8 }}
         className="relative z-10 flex flex-col items-center"
       >
-        {/* Photo with gradient fade */}
-        <div className="relative mb-4" style={{ width: PHOTO_W, height: PHOTO_H }}>
+        {/* Photo with glasses */}
+        <div
+          className="relative mb-4"
+          data-photo-container=""
+          style={{ width: PHOTO_W, height: PHOTO_H }}
+        >
           {/* Neon glow behind */}
           <div
             className="absolute"
             style={{
-              inset: "-20px",
-              background: "radial-gradient(ellipse at center, hsl(var(--primary) / 0.25) 0%, transparent 70%)",
-              filter: "blur(24px)",
+              inset: "-24px",
+              background: "radial-gradient(ellipse at center, hsl(var(--primary) / 0.22) 0%, transparent 70%)",
+              filter: "blur(26px)",
               zIndex: 0,
               pointerEvents: "none",
             }}
@@ -50,12 +123,42 @@ export default function Hero({ onShake }: { onShake: () => void }) {
           <div
             className="absolute bottom-0 left-0 right-0 pointer-events-none"
             style={{
-              height: "50%",
+              height: "48%",
               background: "linear-gradient(to bottom, transparent 0%, #090b16 100%)",
               zIndex: 16,
             }}
           />
+
+          {/* Glasses layer */}
+          <div className="absolute inset-0" style={{ zIndex: 20, overflow: "visible" }}>
+            <ThugLifeGlasses
+              onDrop={(inFace) => setDealWithIt(inFace)}
+              onDragStart={() => setDealWithIt(false)}
+            />
+          </div>
         </div>
+
+        {/* DEAL WITH IT text */}
+        <AnimatePresence>
+          {dealWithIt && (
+            <motion.div
+              key="deal-with-it"
+              initial={{ opacity: 0, y: 24, scale: 0.7 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: -16, scale: 0.8 }}
+              transition={{ type: "spring", stiffness: 300, damping: 18 }}
+              className="font-display uppercase text-center mb-3"
+              style={{
+                fontSize: "clamp(1.1rem, 4.5vw, 2rem)",
+                color: "#ffd700",
+                textShadow: "0 0 20px #ffd700, 0 0 40px #ff8800, 2px 2px 0 #000",
+                letterSpacing: "0.08em",
+              }}
+            >
+              DEAL WITH IT 😎
+            </motion.div>
+          )}
+        </AnimatePresence>
 
         <motion.h1
           className="font-display font-black uppercase leading-tight mb-2"
