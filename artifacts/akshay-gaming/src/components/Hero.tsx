@@ -149,14 +149,6 @@ export default function Hero({ onShake }: { onShake: () => void }) {
           Mera naam Akshay.. Akshay Yadav 🔥
         </motion.p>
 
-        <motion.p
-          className="text-sm text-muted-foreground mt-2 font-mono italic"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.7 }}
-        >
-          Roz 8 ghante Free Fire. Gussa? Hamesha. 😡
-        </motion.p>
       </motion.div>
     </section>
   );
