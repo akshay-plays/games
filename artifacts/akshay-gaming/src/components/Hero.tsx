@@ -1,12 +1,12 @@
 import { motion } from "framer-motion";
-import { useRef, useState } from "react";
+import { useState } from "react";
 
 const akshayphoto = `${import.meta.env.BASE_URL}akshay-photo.png`;
 const thugsGlasses = `${import.meta.env.BASE_URL}thug-glasses.png`;
 
 function ThugLifeGlasses({ containerW, containerH }: { containerW: number; containerH: number }) {
   const [isDragging, setIsDragging] = useState(false);
-  const glassesW = Math.round(containerW * 0.78);
+  const glassesW = 120;
 
   return (
     <motion.div
@@ -17,7 +17,7 @@ function ThugLifeGlasses({ containerW, containerH }: { containerW: number; conta
       onDragEnd={() => setIsDragging(false)}
       initial={{
         x: Math.round((containerW - glassesW) / 2),
-        y: Math.round(containerH * 0.26),
+        y: Math.round(containerH * 0.22),
       }}
       whileDrag={{ scale: 1.06 }}
       className="absolute top-0 left-0 pointer-events-auto select-none"
@@ -26,7 +26,7 @@ function ThugLifeGlasses({ containerW, containerH }: { containerW: number; conta
         touchAction: "none",
         zIndex: 30,
         width: glassesW,
-        filter: "drop-shadow(0 0 8px #ff00ffaa)",
+        filter: "drop-shadow(0 0 6px #ff00ffaa)",
       }}
       title="Drag glasses onto the face!"
     >
@@ -34,21 +34,12 @@ function ThugLifeGlasses({ containerW, containerH }: { containerW: number; conta
         src={thugsGlasses}
         alt="Thug Life Glasses"
         draggable={false}
-        style={{ width: "100%", display: "block" }}
-      />
-      <div
-        className="text-center font-display select-none"
         style={{
-          color: "#ff00ff",
-          textShadow: "0 0 8px #ff00ff",
-          fontSize: "9px",
-          letterSpacing: "0.1em",
-          marginTop: 2,
-          fontFamily: "'Press Start 2P', monospace",
+          width: "100%",
+          display: "block",
+          transform: "scaleX(-1)",
         }}
-      >
-        DRAG ME 😎
-      </div>
+      />
     </motion.div>
   );
 }
