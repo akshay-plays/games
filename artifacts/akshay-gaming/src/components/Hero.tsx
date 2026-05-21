@@ -1,60 +1,60 @@
 import { motion } from "framer-motion";
 import { useRef, useState } from "react";
-const akshayphoto = `${import.meta.env.BASE_URL}akshay-photo.png`;
 
-function ThugLifeGlasses() {
-  const constraintsRef = useRef<HTMLDivElement>(null);
+const akshayphoto = `${import.meta.env.BASE_URL}akshay-photo.png`;
+const thugsGlasses = `${import.meta.env.BASE_URL}thug-glasses.png`;
+
+function ThugLifeGlasses({ containerW, containerH }: { containerW: number; containerH: number }) {
   const [isDragging, setIsDragging] = useState(false);
+  const glassesW = Math.round(containerW * 0.78);
 
   return (
-    <div
-      ref={constraintsRef}
-      className="absolute inset-0 overflow-visible pointer-events-none"
-      style={{ zIndex: 20 }}
+    <motion.div
+      drag
+      dragMomentum={false}
+      dragElastic={0}
+      onDragStart={() => setIsDragging(true)}
+      onDragEnd={() => setIsDragging(false)}
+      initial={{
+        x: Math.round((containerW - glassesW) / 2),
+        y: Math.round(containerH * 0.26),
+      }}
+      whileDrag={{ scale: 1.06 }}
+      className="absolute top-0 left-0 pointer-events-auto select-none"
+      style={{
+        cursor: isDragging ? "grabbing" : "grab",
+        touchAction: "none",
+        zIndex: 30,
+        width: glassesW,
+        filter: "drop-shadow(0 0 8px #ff00ffaa)",
+      }}
+      title="Drag glasses onto the face!"
     >
-      <motion.div
-        drag
-        dragMomentum={false}
-        dragElastic={0}
-        onDragStart={() => setIsDragging(true)}
-        onDragEnd={() => setIsDragging(false)}
-        initial={{ x: 60, y: 80 }}
-        whileDrag={{ scale: 1.08 }}
-        className="absolute pointer-events-auto select-none"
-        style={{ cursor: isDragging ? "grabbing" : "grab", touchAction: "none" }}
-        title="Drag the glasses!"
+      <img
+        src={thugsGlasses}
+        alt="Thug Life Glasses"
+        draggable={false}
+        style={{ width: "100%", display: "block" }}
+      />
+      <div
+        className="text-center font-display select-none"
+        style={{
+          color: "#ff00ff",
+          textShadow: "0 0 8px #ff00ff",
+          fontSize: "9px",
+          letterSpacing: "0.1em",
+          marginTop: 2,
+          fontFamily: "'Press Start 2P', monospace",
+        }}
       >
-        <svg
-          viewBox="0 0 220 60"
-          width="160"
-          height="44"
-          style={{ filter: "drop-shadow(0 4px 12px #000a) drop-shadow(0 0 6px #ff00ff88)" }}
-        >
-          {/* Left lens */}
-          <rect x="4" y="10" width="84" height="40" rx="6" fill="#111" stroke="#333" strokeWidth="3" />
-          {/* Right lens */}
-          <rect x="132" y="10" width="84" height="40" rx="6" fill="#111" stroke="#333" strokeWidth="3" />
-          {/* Bridge */}
-          <rect x="88" y="24" width="44" height="12" rx="4" fill="#111" stroke="#333" strokeWidth="2" />
-          {/* Left temple */}
-          <rect x="0" y="24" width="6" height="6" rx="2" fill="#222" />
-          {/* Right temple */}
-          <rect x="214" y="24" width="6" height="6" rx="2" fill="#222" />
-          {/* Pixel shine left */}
-          <rect x="12" y="16" width="16" height="6" rx="2" fill="#ffffff22" />
-          {/* Pixel shine right */}
-          <rect x="140" y="16" width="16" height="6" rx="2" fill="#ffffff22" />
-        </svg>
-        <div
-          className="text-center font-display text-xs mt-1 select-none"
-          style={{ color: "#ff00ff", textShadow: "0 0 8px #ff00ff", fontSize: "9px", letterSpacing: "0.1em" }}
-        >
-          DRAG ME 😎
-        </div>
-      </motion.div>
-    </div>
+        DRAG ME 😎
+      </div>
+    </motion.div>
   );
 }
+
+const PHOTO_W = 260;
+const PHOTO_H = 340;
 
 export default function Hero({ onShake }: { onShake: () => void }) {
   return (
@@ -65,39 +65,45 @@ export default function Hero({ onShake }: { onShake: () => void }) {
         transition={{ delay: 0.2, duration: 0.8 }}
         className="relative z-10 flex flex-col items-center"
       >
-        {/* Photo container with glasses */}
-        <div className="relative mb-6" style={{ width: 200, height: 220 }}>
-          <motion.div
-            animate={{ y: [0, -8, 0] }}
+        {/* Photo + draggable glasses */}
+        <div
+          className="relative mb-6"
+          style={{ width: PHOTO_W, height: PHOTO_H }}
+        >
+          {/* Ambient glow only — no border/box */}
+          <div
+            className="absolute inset-0"
+            style={{
+              background: "radial-gradient(ellipse at center, hsl(var(--primary) / 0.25) 0%, transparent 70%)",
+              filter: "blur(24px)",
+              transform: "scale(1.25)",
+              borderRadius: "50%",
+            }}
+          />
+          <motion.img
+            src={akshayphoto}
+            alt="Akshay Yadav"
+            draggable={false}
+            animate={{ y: [0, -6, 0] }}
             transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
             className="relative"
-            style={{ width: 200, height: 220 }}
-          >
-            {/* Neon glow ring */}
-            <div
-              className="absolute inset-0 rounded-full"
-              style={{
-                background: "radial-gradient(circle, hsl(var(--primary) / 0.3) 0%, transparent 70%)",
-                filter: "blur(16px)",
-                transform: "scale(1.2)",
-              }}
-            />
-            {/* Photo */}
-            <img
-              src={akshayphoto}
-              alt="Akshay Yadav"
-              className="relative z-10 w-full h-full object-cover object-top rounded-2xl"
-              style={{
-                border: "3px solid hsl(var(--primary))",
-                boxShadow: "0 0 30px hsl(var(--primary) / 0.6), 0 0 60px hsl(var(--secondary) / 0.3)",
-              }}
-              draggable={false}
-            />
-          </motion.div>
-          {/* Draggable glasses overlay */}
-          <ThugLifeGlasses />
+            style={{
+              width: PHOTO_W,
+              height: PHOTO_H,
+              objectFit: "cover",
+              objectPosition: "top center",
+              zIndex: 10,
+              borderRadius: 0,
+            }}
+          />
+
+          {/* Glasses layer — absolutely positioned over the photo */}
+          <div className="absolute inset-0" style={{ zIndex: 20, overflow: "visible" }}>
+            <ThugLifeGlasses containerW={PHOTO_W} containerH={PHOTO_H} />
+          </div>
         </div>
 
+        {/* Title */}
         <motion.h1
           className="font-display font-black uppercase leading-tight mb-2"
           style={{
