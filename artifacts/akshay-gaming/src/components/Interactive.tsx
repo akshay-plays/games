@@ -24,10 +24,7 @@ const SCHEDULE = [
 const XP_STATS = [
   { label: "Free Fire Hours", value: 98, color: "hsl(var(--primary))" },
   { label: "Gussa Level 😡", value: 95, color: "hsl(var(--destructive))" },
-  { label: "Asphalt Grind", value: 45, color: "hsl(var(--accent))" },
   { label: "Padhai ka XP 📚", value: 3, color: "#8b5cf6" },
-  { label: "Mitha khaya 🍬", value: 88, color: "hsl(var(--secondary))" },
-  { label: "Maa ka dar 👩", value: 100, color: "#ff00ff" },
 ];
 
 export default function Interactive({

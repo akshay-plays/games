@@ -1,23 +1,61 @@
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { useState } from "react";
 
 const akshayphoto = `${import.meta.env.BASE_URL}akshay-photo.png`;
 const thugsGlasses = `${import.meta.env.BASE_URL}thug-glasses.png`;
 
-function ThugLifeGlasses({ containerW, containerH }: { containerW: number; containerH: number }) {
+const PHOTO_W = 280;
+const PHOTO_H = 360;
+const GLASSES_W = 120;
+
+// Face zone: top ~45% of photo, center horizontal
+const FACE_ZONE = { x0: 30, x1: 220, y0: 20, y1: 155 };
+
+function ThugLifeGlasses({
+  onDrop,
+  onDragStart,
+}: {
+  onDrop: (inFace: boolean) => void;
+  onDragStart: () => void;
+}) {
   const [isDragging, setIsDragging] = useState(false);
-  const glassesW = 120;
 
   return (
     <motion.div
       drag
       dragMomentum={false}
       dragElastic={0}
-      onDragStart={() => setIsDragging(true)}
-      onDragEnd={() => setIsDragging(false)}
+      onDragStart={() => {
+        setIsDragging(true);
+        onDragStart();
+      }}
+      onDragEnd={(_e, info) => {
+        setIsDragging(false);
+        // info.point is the absolute page position — use offset instead
+        const el = document.getElementById("glasses-drag");
+        if (el) {
+          const rect = el.getBoundingClientRect();
+          const parentRect = el.closest("[data-photo-container]")?.getBoundingClientRect();
+          if (parentRect) {
+            const relX = rect.left - parentRect.left;
+            const relY = rect.top - parentRect.top;
+            const cx = relX + GLASSES_W / 2;
+            const cy = relY + 10; // top of glasses
+            const inFace =
+              cx >= FACE_ZONE.x0 &&
+              cx <= FACE_ZONE.x1 &&
+              cy >= FACE_ZONE.y0 &&
+              cy <= FACE_ZONE.y1;
+            onDrop(inFace);
+            return;
+          }
+        }
+        onDrop(false);
+      }}
+      id="glasses-drag"
       initial={{
-        x: Math.round((containerW - glassesW) / 2),
-        y: Math.round(containerH * 0.22),
+        x: Math.round((PHOTO_W - GLASSES_W) / 2),
+        y: Math.round(PHOTO_H * 0.22),
       }}
       whileDrag={{ scale: 1.06 }}
       className="absolute top-0 left-0 pointer-events-auto select-none"
@@ -25,7 +63,7 @@ function ThugLifeGlasses({ containerW, containerH }: { containerW: number; conta
         cursor: isDragging ? "grabbing" : "grab",
         touchAction: "none",
         zIndex: 30,
-        width: glassesW,
+        width: GLASSES_W,
         filter: "drop-shadow(0 0 6px #ff00ffaa)",
       }}
       title="Drag glasses onto the face!"
@@ -34,20 +72,15 @@ function ThugLifeGlasses({ containerW, containerH }: { containerW: number; conta
         src={thugsGlasses}
         alt="Thug Life Glasses"
         draggable={false}
-        style={{
-          width: "100%",
-          display: "block",
-          transform: "scaleX(-1)",
-        }}
+        style={{ width: "100%", display: "block", transform: "scaleX(-1)" }}
       />
     </motion.div>
   );
 }
 
-const PHOTO_W = 280;
-const PHOTO_H = 360;
-
 export default function Hero({ onShake }: { onShake: () => void }) {
+  const [dealWithIt, setDealWithIt] = useState(false);
+
   return (
     <section className="relative min-h-[70vh] flex flex-col items-center justify-center text-center py-12 overflow-visible">
       <motion.div
@@ -59,9 +92,10 @@ export default function Hero({ onShake }: { onShake: () => void }) {
         {/* Photo + draggable glasses */}
         <div
           className="relative mb-6"
+          data-photo-container=""
           style={{ width: PHOTO_W, height: PHOTO_H }}
         >
-          {/* Ambient glow — sits behind, completely separate from photo */}
+          {/* Ambient glow */}
           <div
             className="absolute"
             style={{
@@ -73,7 +107,6 @@ export default function Hero({ onShake }: { onShake: () => void }) {
             }}
           />
 
-          {/* Photo — no blend mode so colors stay true */}
           <motion.img
             src={akshayphoto}
             alt="Akshay Yadav"
@@ -93,9 +126,34 @@ export default function Hero({ onShake }: { onShake: () => void }) {
 
           {/* Glasses layer */}
           <div className="absolute inset-0" style={{ zIndex: 20, overflow: "visible" }}>
-            <ThugLifeGlasses containerW={PHOTO_W} containerH={PHOTO_H} />
+            <ThugLifeGlasses
+              onDrop={(inFace) => setDealWithIt(inFace)}
+              onDragStart={() => setDealWithIt(false)}
+            />
           </div>
         </div>
+
+        {/* DEAL WITH IT text */}
+        <AnimatePresence>
+          {dealWithIt && (
+            <motion.div
+              key="deal-with-it"
+              initial={{ opacity: 0, y: 30, scale: 0.7 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: -20, scale: 0.8 }}
+              transition={{ type: "spring", stiffness: 300, damping: 18 }}
+              className="font-display uppercase text-center mb-4"
+              style={{
+                fontSize: "clamp(1.2rem, 5vw, 2.2rem)",
+                color: "#ffd700",
+                textShadow: "0 0 20px #ffd700, 0 0 40px #ff8800, 2px 2px 0 #000",
+                letterSpacing: "0.08em",
+              }}
+            >
+              DEAL WITH IT 😎
+            </motion.div>
+          )}
+        </AnimatePresence>
 
         {/* Title */}
         <motion.h1
@@ -138,7 +196,6 @@ export default function Hero({ onShake }: { onShake: () => void }) {
         >
           Mera naam Akshay.. Akshay Yadav 🔥
         </motion.p>
-
       </motion.div>
     </section>
   );
