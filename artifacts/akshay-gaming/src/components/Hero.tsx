@@ -4,12 +4,12 @@ import { useState } from "react";
 const akshayphoto = `${import.meta.env.BASE_URL}akshay-photo.png`;
 const thugsGlasses = `${import.meta.env.BASE_URL}thug-glasses.png`;
 
-const PHOTO_W = 280;
-const PHOTO_H = 360;
-const GLASSES_W = 120;
+const PHOTO_W = 210;
+const PHOTO_H = 300;
+const GLASSES_W = 110;
 
-// Face zone: top ~45% of photo, center horizontal
-const FACE_ZONE = { x0: 30, x1: 220, y0: 20, y1: 155 };
+// Face zone: top ~40% of photo, center horizontal
+const FACE_ZONE = { x0: 20, x1: 190, y0: 15, y1: 125 };
 
 function ThugLifeGlasses({
   onDrop,
@@ -55,7 +55,7 @@ function ThugLifeGlasses({
       id="glasses-drag"
       initial={{
         x: Math.round((PHOTO_W - GLASSES_W) / 2),
-        y: Math.round(PHOTO_H * 0.22),
+        y: Math.round(PHOTO_H * 0.18),
       }}
       whileDrag={{ scale: 1.06 }}
       className="absolute top-0 left-0 pointer-events-auto select-none"
@@ -118,7 +118,8 @@ export default function Hero({ onShake }: { onShake: () => void }) {
               width: PHOTO_W,
               height: PHOTO_H,
               objectFit: "cover",
-              objectPosition: "20% top",
+              objectPosition: "center top",
+              clipPath: "inset(0 6% 8% 6%)",
               zIndex: 10,
               display: "block",
             }}
