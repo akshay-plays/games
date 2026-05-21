@@ -1,171 +1,23 @@
-import { motion, AnimatePresence } from "framer-motion";
-import { useState } from "react";
-
-const akshayphoto = `${import.meta.env.BASE_URL}akshay-photo.png`;
-const thugsGlasses = `${import.meta.env.BASE_URL}thug-glasses.png`;
-
-const PHOTO_W = 210;
-const PHOTO_H = 300;
-const GLASSES_W = 110;
-
-// Face zone: top ~40% of photo, center horizontal
-const FACE_ZONE = { x0: 20, x1: 190, y0: 15, y1: 125 };
-
-function ThugLifeGlasses({
-  onDrop,
-  onDragStart,
-}: {
-  onDrop: (inFace: boolean) => void;
-  onDragStart: () => void;
-}) {
-  const [isDragging, setIsDragging] = useState(false);
-
-  return (
-    <motion.div
-      drag
-      dragMomentum={false}
-      dragElastic={0}
-      onDragStart={() => {
-        setIsDragging(true);
-        onDragStart();
-      }}
-      onDragEnd={(_e, info) => {
-        setIsDragging(false);
-        // info.point is the absolute page position — use offset instead
-        const el = document.getElementById("glasses-drag");
-        if (el) {
-          const rect = el.getBoundingClientRect();
-          const parentRect = el.closest("[data-photo-container]")?.getBoundingClientRect();
-          if (parentRect) {
-            const relX = rect.left - parentRect.left;
-            const relY = rect.top - parentRect.top;
-            const cx = relX + GLASSES_W / 2;
-            const cy = relY + 10; // top of glasses
-            const inFace =
-              cx >= FACE_ZONE.x0 &&
-              cx <= FACE_ZONE.x1 &&
-              cy >= FACE_ZONE.y0 &&
-              cy <= FACE_ZONE.y1;
-            onDrop(inFace);
-            return;
-          }
-        }
-        onDrop(false);
-      }}
-      id="glasses-drag"
-      initial={{
-        x: Math.round((PHOTO_W - GLASSES_W) / 2),
-        y: Math.round(PHOTO_H * 0.18),
-      }}
-      whileDrag={{ scale: 1.06 }}
-      className="absolute top-0 left-0 pointer-events-auto select-none"
-      style={{
-        cursor: isDragging ? "grabbing" : "grab",
-        touchAction: "none",
-        zIndex: 30,
-        width: GLASSES_W,
-        filter: "drop-shadow(0 0 6px #ff00ffaa)",
-      }}
-      title="Drag glasses onto the face!"
-    >
-      <img
-        src={thugsGlasses}
-        alt="Thug Life Glasses"
-        draggable={false}
-        style={{ width: "100%", display: "block", transform: "scaleX(-1)" }}
-      />
-    </motion.div>
-  );
-}
+import { motion } from "framer-motion";
 
 export default function Hero({ onShake }: { onShake: () => void }) {
-  const [dealWithIt, setDealWithIt] = useState(false);
-
   return (
-    <section className="relative min-h-[70vh] flex flex-col items-center justify-center text-center py-12 overflow-visible">
+    <section className="relative min-h-[60vh] flex flex-col items-center justify-center text-center py-12 overflow-visible">
       <motion.div
         initial={{ opacity: 0, y: -30 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.2, duration: 0.8 }}
         className="relative z-10 flex flex-col items-center"
       >
-        {/* Photo + draggable glasses */}
-        <div
-          className="relative mb-6"
-          data-photo-container=""
-          style={{ width: PHOTO_W, height: PHOTO_H }}
+        <motion.span
+          className="text-7xl md:text-8xl select-none mb-6"
+          animate={{ rotate: [-5, 5, -5], scale: [1, 1.08, 1] }}
+          transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+          style={{ filter: "drop-shadow(0 0 24px hsl(var(--primary)))" }}
         >
-          {/* Ambient glow */}
-          <div
-            className="absolute"
-            style={{
-              inset: "-30px",
-              background: "radial-gradient(ellipse at center, hsl(var(--primary) / 0.2) 0%, transparent 65%)",
-              filter: "blur(28px)",
-              zIndex: 0,
-              pointerEvents: "none",
-            }}
-          />
+          😎
+        </motion.span>
 
-          <motion.img
-            src={akshayphoto}
-            alt="Akshay Yadav"
-            draggable={false}
-            animate={{ y: [0, -6, 0] }}
-            transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-            style={{
-              position: "relative",
-              width: PHOTO_W,
-              height: PHOTO_H,
-              objectFit: "cover",
-              objectPosition: "center top",
-              zIndex: 10,
-              display: "block",
-            }}
-          />
-
-          {/* Bottom gradient fade — smooth dissolve instead of hard cut */}
-          <div
-            className="absolute bottom-0 left-0 right-0 pointer-events-none"
-            style={{
-              height: "45%",
-              background: "linear-gradient(to bottom, transparent 0%, #090b16 100%)",
-              zIndex: 16,
-            }}
-          />
-
-          {/* Glasses layer */}
-          <div className="absolute inset-0" style={{ zIndex: 20, overflow: "visible" }}>
-            <ThugLifeGlasses
-              onDrop={(inFace) => setDealWithIt(inFace)}
-              onDragStart={() => setDealWithIt(false)}
-            />
-          </div>
-        </div>
-
-        {/* DEAL WITH IT text */}
-        <AnimatePresence>
-          {dealWithIt && (
-            <motion.div
-              key="deal-with-it"
-              initial={{ opacity: 0, y: 30, scale: 0.7 }}
-              animate={{ opacity: 1, y: 0, scale: 1 }}
-              exit={{ opacity: 0, y: -20, scale: 0.8 }}
-              transition={{ type: "spring", stiffness: 300, damping: 18 }}
-              className="font-display uppercase text-center mb-4"
-              style={{
-                fontSize: "clamp(1.2rem, 5vw, 2.2rem)",
-                color: "#ffd700",
-                textShadow: "0 0 20px #ffd700, 0 0 40px #ff8800, 2px 2px 0 #000",
-                letterSpacing: "0.08em",
-              }}
-            >
-              DEAL WITH IT 😎
-            </motion.div>
-          )}
-        </AnimatePresence>
-
-        {/* Title */}
         <motion.h1
           className="font-display font-black uppercase leading-tight mb-2"
           style={{
