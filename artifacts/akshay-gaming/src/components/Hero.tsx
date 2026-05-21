@@ -1,5 +1,10 @@
 import { motion } from "framer-motion";
 
+const akshayphoto = `${import.meta.env.BASE_URL}akshay-photo.png`;
+
+const PHOTO_W = 220;
+const PHOTO_H = 300;
+
 export default function Hero({ onShake }: { onShake: () => void }) {
   return (
     <section className="relative min-h-[60vh] flex flex-col items-center justify-center text-center py-12 overflow-visible">
@@ -9,14 +14,48 @@ export default function Hero({ onShake }: { onShake: () => void }) {
         transition={{ delay: 0.2, duration: 0.8 }}
         className="relative z-10 flex flex-col items-center"
       >
-        <motion.span
-          className="text-7xl md:text-8xl select-none mb-6"
-          animate={{ rotate: [-5, 5, -5], scale: [1, 1.08, 1] }}
-          transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
-          style={{ filter: "drop-shadow(0 0 24px hsl(var(--primary)))" }}
-        >
-          😎
-        </motion.span>
+        {/* Photo with gradient fade */}
+        <div className="relative mb-4" style={{ width: PHOTO_W, height: PHOTO_H }}>
+          {/* Neon glow behind */}
+          <div
+            className="absolute"
+            style={{
+              inset: "-20px",
+              background: "radial-gradient(ellipse at center, hsl(var(--primary) / 0.25) 0%, transparent 70%)",
+              filter: "blur(24px)",
+              zIndex: 0,
+              pointerEvents: "none",
+            }}
+          />
+
+          {/* Photo */}
+          <motion.img
+            src={akshayphoto}
+            alt="Akshay Yadav"
+            draggable={false}
+            animate={{ y: [0, -6, 0] }}
+            transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+            style={{
+              position: "relative",
+              width: PHOTO_W,
+              height: PHOTO_H,
+              objectFit: "cover",
+              objectPosition: "center top",
+              zIndex: 10,
+              display: "block",
+            }}
+          />
+
+          {/* Smooth gradient fade at the bottom */}
+          <div
+            className="absolute bottom-0 left-0 right-0 pointer-events-none"
+            style={{
+              height: "50%",
+              background: "linear-gradient(to bottom, transparent 0%, #090b16 100%)",
+              zIndex: 16,
+            }}
+          />
+        </div>
 
         <motion.h1
           className="font-display font-black uppercase leading-tight mb-2"
