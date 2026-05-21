@@ -44,8 +44,8 @@ function ThugLifeGlasses({ containerW, containerH }: { containerW: number; conta
   );
 }
 
-const PHOTO_W = 260;
-const PHOTO_H = 340;
+const PHOTO_W = 310;
+const PHOTO_H = 410;
 
 export default function Hero({ onShake }: { onShake: () => void }) {
   return (
@@ -61,34 +61,46 @@ export default function Hero({ onShake }: { onShake: () => void }) {
           className="relative mb-6"
           style={{ width: PHOTO_W, height: PHOTO_H }}
         >
-          {/* Ambient glow only — no border/box */}
+          {/* Ambient glow — sits behind, completely separate from photo */}
           <div
-            className="absolute inset-0"
+            className="absolute"
             style={{
-              background: "radial-gradient(ellipse at center, hsl(var(--primary) / 0.25) 0%, transparent 70%)",
-              filter: "blur(24px)",
-              transform: "scale(1.25)",
-              borderRadius: "50%",
+              inset: "-30px",
+              background: "radial-gradient(ellipse at center, hsl(var(--primary) / 0.2) 0%, transparent 65%)",
+              filter: "blur(28px)",
+              zIndex: 0,
+              pointerEvents: "none",
             }}
           />
+
+          {/* Photo — no blend mode so colors stay true */}
           <motion.img
             src={akshayphoto}
             alt="Akshay Yadav"
             draggable={false}
             animate={{ y: [0, -6, 0] }}
             transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-            className="relative"
             style={{
+              position: "relative",
               width: PHOTO_W,
               height: PHOTO_H,
               objectFit: "cover",
               objectPosition: "top center",
               zIndex: 10,
-              borderRadius: 0,
+              display: "block",
             }}
           />
 
-          {/* Glasses layer — absolutely positioned over the photo */}
+          {/* Inset shadow overlay — eats white fringe pixels at every edge */}
+          <div
+            className="absolute inset-0 pointer-events-none"
+            style={{
+              zIndex: 15,
+              boxShadow: "inset 0 0 28px 16px #090b16",
+            }}
+          />
+
+          {/* Glasses layer */}
           <div className="absolute inset-0" style={{ zIndex: 20, overflow: "visible" }}>
             <ThugLifeGlasses containerW={PHOTO_W} containerH={PHOTO_H} />
           </div>
