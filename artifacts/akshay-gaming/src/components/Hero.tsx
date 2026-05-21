@@ -44,8 +44,8 @@ function ThugLifeGlasses({ containerW, containerH }: { containerW: number; conta
   );
 }
 
-const PHOTO_W = 230;
-const PHOTO_H = 290;
+const PHOTO_W = 280;
+const PHOTO_H = 360;
 
 export default function Hero({ onShake }: { onShake: () => void }) {
   return (
@@ -88,16 +88,6 @@ export default function Hero({ onShake }: { onShake: () => void }) {
               objectPosition: "20% top",
               zIndex: 10,
               display: "block",
-              clipPath: "inset(0 8% 12% 8%)",
-            }}
-          />
-
-          {/* Inset shadow overlay — eats white fringe pixels at every edge */}
-          <div
-            className="absolute inset-0 pointer-events-none"
-            style={{
-              zIndex: 15,
-              boxShadow: "inset 0 0 40px 28px #090b16",
             }}
           />
 

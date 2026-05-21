@@ -34,11 +34,6 @@ Akshay: "Bas, 2 minute. Abhi chalu kiya! Yeh wala hone ke baad rakh dunga!"
     desc: "Dikh nahi raha tha mai game me tha, samne banda tha!?",
   },
   {
-    emoji: "🤣",
-    title: "Dosti ka Style",
-    desc: "Dost se milne ka andaaz: 'Abe tu bhi bekaar khelta hai.' Dost ka reply: '😭' (phir bhi saath khelte hain).",
-  },
-  {
     emoji: "🚗",
     title: "Car Fan",
     desc: "Gaadi se zyada pyaar hai kisi cheez se nahi — Asphalt mein bhi gaadi, dreams mein bhi gaadi. Bhai fast hai. 🏎️💨",
