@@ -119,9 +119,18 @@ export default function Hero({ onShake }: { onShake: () => void }) {
               height: PHOTO_H,
               objectFit: "cover",
               objectPosition: "center top",
-              clipPath: "inset(0 6% 8% 6%)",
               zIndex: 10,
               display: "block",
+            }}
+          />
+
+          {/* Bottom gradient fade — smooth dissolve instead of hard cut */}
+          <div
+            className="absolute bottom-0 left-0 right-0 pointer-events-none"
+            style={{
+              height: "45%",
+              background: "linear-gradient(to bottom, transparent 0%, #090b16 100%)",
+              zIndex: 16,
             }}
           />
 
