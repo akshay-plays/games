@@ -1,5 +1,5 @@
 import { motion, AnimatePresence } from "framer-motion";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 const akshayphoto = `${import.meta.env.BASE_URL}akshay-photo.png`;
 const thugsGlasses = `${import.meta.env.BASE_URL}thug-glasses.png`;
@@ -9,6 +9,50 @@ const PHOTO_H = 370;
 const GLASSES_W = 130;
 
 const FACE_ZONE = { x0: 25, x1: 230, y0: 15, y1: 140 };
+
+/* Confetti particle colors */
+const CONFETTI_COLORS = [
+  "#ff0080", "#ff8c00", "#ffd700", "#00ff88",
+  "#00cfff", "#bf5fff", "#ff4444", "#ffffff",
+];
+
+function ConfettiBurst() {
+  const particles = Array.from({ length: 36 }, (_, i) => {
+    const angle = (i / 36) * 360 + Math.random() * 10;
+    const dist = 80 + Math.random() * 100;
+    const rad = (angle * Math.PI) / 180;
+    const tx = Math.cos(rad) * dist;
+    const ty = Math.sin(rad) * dist - 40;
+    const color = CONFETTI_COLORS[i % CONFETTI_COLORS.length];
+    const size = 6 + Math.random() * 8;
+    const rotate = Math.random() * 720 - 360;
+    return { tx, ty, color, size, rotate, i };
+  });
+
+  return (
+    <div
+      className="pointer-events-none absolute"
+      style={{ top: "30%", left: "50%", zIndex: 50, transform: "translate(-50%,-50%)" }}
+    >
+      {particles.map(({ tx, ty, color, size, rotate, i }) => (
+        <motion.div
+          key={i}
+          initial={{ x: 0, y: 0, opacity: 1, rotate: 0, scale: 1 }}
+          animate={{ x: tx, y: ty, opacity: 0, rotate, scale: 0.4 }}
+          transition={{ duration: 1.2, ease: "easeOut", delay: Math.random() * 0.1 }}
+          style={{
+            position: "absolute",
+            width: size,
+            height: size,
+            borderRadius: Math.random() > 0.5 ? "50%" : "2px",
+            backgroundColor: color,
+            boxShadow: `0 0 6px ${color}`,
+          }}
+        />
+      ))}
+    </div>
+  );
+}
 
 function ThugLifeGlasses({
   onDrop,
@@ -47,20 +91,18 @@ function ThugLifeGlasses({
         onDrop(false);
       }}
       id="glasses-drag"
-      initial={{
-        x: Math.round((PHOTO_W - GLASSES_W) / 2),
-        y: Math.round(PHOTO_H * 0.18),
-      }}
-      whileDrag={{ scale: 1.06 }}
+      /* Start to the right of his head */
+      initial={{ x: 165, y: 58 }}
+      whileDrag={{ scale: 1.08 }}
       className="absolute top-0 left-0 pointer-events-auto select-none"
       style={{
         cursor: isDragging ? "grabbing" : "grab",
         touchAction: "none",
         zIndex: 30,
         width: GLASSES_W,
-        filter: "drop-shadow(0 0 6px #ff00ffaa)",
+        filter: "drop-shadow(0 0 8px #bf5fff) drop-shadow(0 0 14px #ff00ff88)",
       }}
-      title="Drag glasses onto the face!"
+      title="Drag glasses onto his face!"
     >
       <img
         src={thugsGlasses}
@@ -74,6 +116,22 @@ function ThugLifeGlasses({
 
 export default function Hero({ onShake }: { onShake: () => void }) {
   const [dealWithIt, setDealWithIt] = useState(false);
+  const [confettiKey, setConfettiKey] = useState(0);
+  const [showConfetti, setShowConfetti] = useState(false);
+
+  const handleDrop = (inFace: boolean) => {
+    setDealWithIt(inFace);
+    if (inFace) {
+      setConfettiKey((k) => k + 1);
+      setShowConfetti(true);
+    }
+  };
+
+  useEffect(() => {
+    if (!showConfetti) return;
+    const t = setTimeout(() => setShowConfetti(false), 1400);
+    return () => clearTimeout(t);
+  }, [showConfetti, confettiKey]);
 
   return (
     <section className="relative min-h-[60vh] flex flex-col items-center justify-center text-center py-12 overflow-visible">
@@ -87,7 +145,7 @@ export default function Hero({ onShake }: { onShake: () => void }) {
         <div
           className="relative mb-4"
           data-photo-container=""
-          style={{ width: PHOTO_W, height: PHOTO_H }}
+          style={{ width: PHOTO_W, height: PHOTO_H, overflow: "visible" }}
         >
           {/* Neon glow behind */}
           <div
@@ -119,7 +177,7 @@ export default function Hero({ onShake }: { onShake: () => void }) {
             }}
           />
 
-          {/* Smooth gradient fade at the bottom */}
+          {/* Gradient fade at the bottom */}
           <div
             className="absolute bottom-0 left-0 right-0 pointer-events-none"
             style={{
@@ -129,16 +187,19 @@ export default function Hero({ onShake }: { onShake: () => void }) {
             }}
           />
 
+          {/* Confetti burst layer */}
+          {showConfetti && <ConfettiBurst key={confettiKey} />}
+
           {/* Glasses layer */}
           <div className="absolute inset-0" style={{ zIndex: 20, overflow: "visible" }}>
             <ThugLifeGlasses
-              onDrop={(inFace) => setDealWithIt(inFace)}
+              onDrop={handleDrop}
               onDragStart={() => setDealWithIt(false)}
             />
           </div>
         </div>
 
-        {/* DEAL WITH IT text */}
+        {/* DEAL WITH IT */}
         <AnimatePresence>
           {dealWithIt && (
             <motion.div
