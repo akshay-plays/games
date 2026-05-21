@@ -116,8 +116,7 @@ export default function Home() {
               </main>
 
               <footer className="w-full py-8 text-center text-muted-foreground border-t border-border mt-20">
-                <p>Pure gusse ke saath banaya gaya 😤 — Akshay Yadav ke liye.</p>
-                <p className="text-xs mt-2 opacity-50">Mummy ko mat batana. 🤫</p>
+                <p>Pure gusse ke saath banaya gaya 😤 — Akshay Yadav</p>
               </footer>
             </>
         </motion.div>

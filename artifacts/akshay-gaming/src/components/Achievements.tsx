@@ -150,9 +150,6 @@ export default function Achievements() {
           <p className="text-muted-foreground text-sm">
             Akshay is out there right now, somewhere between Free Fire and a snack break, building his legacy one rage quit at a time. 💀
           </p>
-          <p className="text-xs text-muted-foreground mt-4 font-mono opacity-50">
-            This website was made with love, humor, and 0 emails (he has none).
-          </p>
         </div>
       </motion.div>
     </section>
