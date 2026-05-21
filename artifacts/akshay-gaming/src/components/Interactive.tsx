@@ -13,18 +13,20 @@ const RAGE_QUOTES = [
 ];
 
 const SCHEDULE = [
-  { time: "Subah uthte hi", icon: "🎮", label: "Free Fire on karo", color: "hsl(var(--primary))" },
-  { time: "Dopahar mein", icon: "🍬", label: "Mitha khao, game karo", color: "hsl(var(--secondary))" },
-  { time: "Shaam ko", icon: "🏎️", label: "Asphalt Legends", color: "hsl(var(--accent))" },
-  { time: "Raat ko", icon: "📺", label: "TV time (forced by maa)", color: "#8b5cf6" },
-  { time: "Sone se pehle", icon: "🎵", label: "Bairan loop pe", color: "hsl(var(--secondary))" },
-  { time: "Raat 2 baje", icon: "🔁", label: "Repeat from step 1", color: "hsl(var(--destructive))" },
+  { time: "Subah uthte hi",    icon: "🎮", label: "Phone uthao, Free Fire kholo",           color: "hsl(var(--primary))" },
+  { time: "Naste ke baad",     icon: "🍬", label: "Mitha khao, game continue",               color: "hsl(var(--secondary))" },
+  { time: "School ke baad",    icon: "📚", label: "Homework? Kal karna hai",                  color: "#8b5cf6" },
+  { time: "Shaam 5 baje",      icon: "🏎️", label: "Asphalt race time",                        color: "hsl(var(--accent))" },
+  { time: "Raat 8 baje",       icon: "📺", label: "Mummy ki zaroorat se TV dekhna 😑",        color: "#ff8800" },
+  { time: "Sone se pehle",     icon: "🎵", label: "Bairan loop pe (aankh band nahi hoti)",    color: "hsl(var(--secondary))" },
+  { time: "Raat 12 baje",      icon: "🎮", label: '"Ek aur game" — actually 4 aur game',      color: "hsl(var(--destructive))" },
+  { time: "Raat 2 baje",       icon: "💀", label: "Phone rakhna padta hai (reluctantly)",     color: "#ff0055" },
 ];
 
 const XP_STATS = [
-  { label: "Free Fire Hours", value: 98, color: "hsl(var(--primary))" },
-  { label: "Gussa Level 😡", value: 95, color: "hsl(var(--destructive))" },
-  { label: "Padhai ka XP 📚", value: 3, color: "#8b5cf6" },
+  { label: "Masti 🎮",         value: 98, color: "hsl(var(--primary))" },
+  { label: "Gussa Level 😡",   value: 95, color: "hsl(var(--destructive))" },
+  { label: "Padhai ka XP 📚",  value: 3,  color: "#8b5cf6" },
 ];
 
 export default function Interactive({
@@ -48,14 +50,6 @@ export default function Interactive({
 
   return (
     <section className="py-8 space-y-14">
-      <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-center mb-8">
-        <h2 className="font-display text-2xl sm:text-3xl uppercase mb-2"
-          style={{ textShadow: "0 0 20px hsl(var(--destructive))", color: "hsl(var(--destructive))" }}>
-          😤 GUSSA CONTROL CENTER 😤
-        </h2>
-        <p className="text-xs text-muted-foreground font-mono">Warning: Handle karo, toot sakta hai (Akshay, not the phone... maybe) 💀</p>
-      </motion.div>
-
       <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
         <motion.button
           whileHover={{ scale: 1.06, boxShadow: "0 0 40px hsl(var(--destructive))" }}
@@ -99,10 +93,15 @@ export default function Interactive({
         )}
       </AnimatePresence>
 
+      {/* XP Stats */}
       <div>
-        <motion.h3 initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }}
-          className="font-display text-xl uppercase text-center mb-6"
-          style={{ color: "hsl(var(--secondary))", textShadow: "0 0 15px hsl(var(--secondary))" }}>
+        <motion.h3
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          className="font-display text-base sm:text-xl uppercase text-center mb-6 whitespace-nowrap"
+          style={{ color: "hsl(var(--secondary))", textShadow: "0 0 15px hsl(var(--secondary))" }}
+        >
           ⚡ AKSHAY KE STATS ⚡
         </motion.h3>
         <div className="space-y-4">
@@ -126,22 +125,35 @@ export default function Interactive({
         </div>
       </div>
 
+      {/* Daily Routine */}
       <div>
-        <motion.h3 initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }}
+        <motion.h3
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
           className="font-display text-xl uppercase text-center mb-6"
-          style={{ color: "hsl(var(--accent))", textShadow: "0 0 15px hsl(var(--accent))" }}>
+          style={{ color: "hsl(var(--accent))", textShadow: "0 0 15px hsl(var(--accent))" }}
+        >
           🗓️ AKSHAY KA DAILY ROUTINE 🗓️
         </motion.h3>
         <div className="relative">
           <div className="absolute left-8 top-0 bottom-0 w-0.5 bg-border" />
           <div className="space-y-4">
             {SCHEDULE.map((item, i) => (
-              <motion.div key={i} initial={{ opacity: 0, x: -20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.1 }}
-                className="relative flex items-center gap-4 pl-16">
-                <motion.div className="absolute left-4 w-8 h-8 rounded-full flex items-center justify-center text-lg border-2"
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, x: -20 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.08 }}
+                className="relative flex items-center gap-4 pl-16"
+              >
+                <motion.div
+                  className="absolute left-4 w-8 h-8 rounded-full flex items-center justify-center text-lg border-2"
                   style={{ borderColor: item.color, background: `${item.color}20`, boxShadow: `0 0 12px ${item.color}` }}
                   animate={{ boxShadow: [`0 0 8px ${item.color}`, `0 0 20px ${item.color}`, `0 0 8px ${item.color}`] }}
-                  transition={{ duration: 2, repeat: Infinity, delay: i * 0.3 }}>
+                  transition={{ duration: 2, repeat: Infinity, delay: i * 0.3 }}
+                >
                   {item.icon}
                 </motion.div>
                 <div className="bg-card border border-border rounded-lg px-4 py-2 flex-1">

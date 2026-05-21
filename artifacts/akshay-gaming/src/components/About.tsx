@@ -31,12 +31,12 @@ Akshay: "Bas, 2 minute. Abhi chalu kiya! Yeh wala hone ke baad rakh dunga!"
   {
     emoji: "💀",
     title: "Mai to nahi sehta",
-    desc: "Dikh nahi raha tha mai game me tha, samne banda tha!?",
+    desc: "Dikh nahi raha tha mai game me tha, samne banda tha!?\nPhir puchte itna kya chid rha yeh",
   },
   {
     emoji: "🚗",
     title: "Car Fan",
-    desc: "Gaadi se zyada pyaar hai kisi cheez se nahi — Asphalt mein bhi gaadi, dreams mein bhi gaadi. Bhai fast hai. 🏎️💨",
+    desc: "Mercedes, BMW, Lamborghini. Sab hai.. bas future me..",
   },
 ];
 
