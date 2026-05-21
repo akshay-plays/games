@@ -1,98 +1,25 @@
-import { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-
-const RAGE_QUOTES = [
-  "YE KAUNSA GAME HAI BHAI, MERA PHONE TODUNGA!! 🤬",
-  "WIFI THEEK HAI, GAME BEKAR HAI — FINAL ANSWER! 📡",
-  "EK CLUTCH CHAHIYE THA, EK!! BUT NAHI MILTI!! 💀",
-  "REPORTED. REPORTED. REPORTED. REPORTED. (loop) 🚨",
-  "GAME CHOD RAHA HU. (5 second baad wapas aata hai) 😤",
-  "BHAI YE SNIPER CROOKED HAI, PAKKA! 🔫",
-  "TEAMMATES BRAIN NAHI HAI — CERTIFIED! 🧠❌",
-  "MUMMY KI KASAM BADLA LUNGA!! 😡🔥",
-];
+import { motion } from "framer-motion";
 
 const SCHEDULE = [
-  { time: "Subah uthte hi",    icon: "🎮", label: "Phone uthao, Free Fire kholo",           color: "hsl(var(--primary))" },
-  { time: "Naste ke baad",     icon: "🍬", label: "Mitha khao, game continue",               color: "hsl(var(--secondary))" },
-  { time: "School ke baad",    icon: "📚", label: "Homework? Kal karna hai",                  color: "#8b5cf6" },
-  { time: "Shaam 5 baje",      icon: "🏎️", label: "Asphalt race time",                        color: "hsl(var(--accent))" },
-  { time: "Raat 8 baje",       icon: "📺", label: "Mummy ki zaroorat se TV dekhna 😑",        color: "#ff8800" },
-  { time: "Sone se pehle",     icon: "🎵", label: "Bairan loop pe (aankh band nahi hoti)",    color: "hsl(var(--secondary))" },
-  { time: "Raat 12 baje",      icon: "🎮", label: '"Ek aur game" — actually 4 aur game',      color: "hsl(var(--destructive))" },
-  { time: "Raat 2 baje",       icon: "💀", label: "Phone rakhna padta hai (reluctantly)",     color: "#ff0055" },
+  { time: "Subah uthte hi",    icon: "🎮", label: "Phone uthao, Free Fire kholo",       color: "hsl(var(--primary))" },
+  { time: "Naste ke baad",     icon: "🍬", label: "Snacks khao, game continue",          color: "hsl(var(--secondary))" },
+  { time: "School ke baad",    icon: "📚", label: "Homework? Kal karlenge",               color: "#8b5cf6" },
+  { time: "Shaam 5 baje",      icon: "🏎️", label: "Chalo khelne",                         color: "hsl(var(--accent))" },
+  { time: "Raat 8 baje",       icon: "📺", label: "TV Time!!",                            color: "#ff8800" },
+  { time: "Sone se pehle",     icon: "🎵", label: "Aur Gaming",                           color: "hsl(var(--secondary))" },
+  { time: "Raat 12 baje",      icon: "🎮", label: '"Ek aur game" — actually 4 aur game',  color: "hsl(var(--destructive))" },
+  { time: "Raat 1 baje",       icon: "💀", label: "Phone rakhna padta hai",               color: "#ff0055" },
 ];
 
 const XP_STATS = [
-  { label: "Masti 🎮",         value: 98, color: "hsl(var(--primary))" },
-  { label: "Gussa Level 😡",   value: 95, color: "hsl(var(--destructive))" },
-  { label: "Padhai ka XP 📚",  value: 3,  color: "#8b5cf6" },
+  { label: "Masti 🎮",        value: 98, color: "hsl(var(--primary))" },
+  { label: "Gussa Level 😡",  value: 95, color: "hsl(var(--destructive))" },
+  { label: "Padhai ka XP 📚", value: 3,  color: "#8b5cf6" },
 ];
 
-export default function Interactive({
-  onShake,
-  motherAlert,
-  setMotherAlert,
-}: {
-  onShake: () => void;
-  motherAlert: boolean;
-  setMotherAlert: (v: boolean) => void;
-}) {
-  const [rageQuote, setRageQuote] = useState("");
-  const [rageClicks, setRageClicks] = useState(0);
-
-  const handleRage = () => {
-    const count = rageClicks + 1;
-    setRageClicks(count);
-    setRageQuote(RAGE_QUOTES[count % RAGE_QUOTES.length]);
-    onShake();
-  };
-
+export default function Interactive() {
   return (
     <section className="py-8 space-y-14">
-      <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
-        <motion.button
-          whileHover={{ scale: 1.06, boxShadow: "0 0 40px hsl(var(--destructive))" }}
-          whileTap={{ scale: 0.92 }}
-          onClick={handleRage}
-          className="relative px-10 py-6 rounded-xl font-display text-lg uppercase tracking-wide text-white transition-all"
-          style={{ background: "linear-gradient(135deg, hsl(var(--destructive)), #cc0000)", boxShadow: "0 0 20px hsl(var(--destructive) / 0.6)" }}
-          data-testid="button-rage"
-        >
-          <motion.span animate={{ scale: [1, 1.1, 1] }} transition={{ duration: 1.5, repeat: Infinity }} className="inline-block mr-2 text-2xl">😤</motion.span>
-          GUSSA BUTTON
-          <div className="text-xs mt-1 font-mono opacity-75">Dabaya: {rageClicks} baar</div>
-        </motion.button>
-
-        <motion.button
-          whileHover={{ scale: 1.06, boxShadow: "0 0 30px #ff8800" }}
-          whileTap={{ scale: 0.92 }}
-          onClick={() => setMotherAlert(!motherAlert)}
-          className="relative px-8 py-6 rounded-xl font-display text-lg uppercase tracking-wide text-white transition-all"
-          style={{ background: "linear-gradient(135deg, #cc6600, #884400)", boxShadow: "0 0 20px rgba(255,136,0,0.5)" }}
-          data-testid="button-mother-alert"
-        >
-          <span className="text-2xl mr-2">🚨👩</span>
-          MUMMY AA GAYI!<br />
-          <span className="text-xs font-mono opacity-75">Mode: {motherAlert ? "ON — Padh raha hu 📚" : "OFF — Game on hai"}</span>
-        </motion.button>
-      </div>
-
-      <AnimatePresence>
-        {rageQuote && (
-          <motion.div
-            key={rageQuote}
-            initial={{ opacity: 0, scale: 0.7, y: 20 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            className="text-center p-4 rounded-lg border border-destructive/50 font-display text-sm uppercase"
-            style={{ background: "hsl(var(--destructive) / 0.1)", color: "hsl(var(--destructive))", textShadow: "0 0 10px hsl(var(--destructive))" }}
-          >
-            {rageQuote}
-          </motion.div>
-        )}
-      </AnimatePresence>
-
       {/* XP Stats */}
       <div>
         <motion.h3

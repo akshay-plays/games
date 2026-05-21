@@ -3,9 +3,7 @@ import { motion } from "framer-motion";
 const ANGER_TRIGGERS = [
   { label: "Baat nhi sunrhe",                       value: 55,  color: "#ff8800" },
   { label: "Game mai mar gaya",                      value: 70,  color: "#ff4400" },
-  { label: "Enemy had speed hack",                   value: 85,  color: "hsl(var(--destructive))" },
   { label: "Kisine mummy ko complain kardi",         value: 75,  color: "#ff3300" },
-  { label: "Missed sniper at 2m range",              value: 60,  color: "#ff6600" },
   { label: "Banda amne tha aur disturb kardiya!!",   value: 100, color: "#ff0000" },
 ];
 
